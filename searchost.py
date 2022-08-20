@@ -11,7 +11,7 @@ logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
 
 import scapy.all as sc
 import requests
-import lxml
+from pyfiglet import Figlet
 from bs4 import BeautifulSoup
 from rich.console import Console
 from rich.progress import Progress
@@ -104,16 +104,17 @@ def print_port(ip_mac_network):
 
 
 def main():
+    console = Console()
+    title_main = Figlet(font='isometric4',justify="center")
+    print(title_main.renderText(f'SEARCHOST'))
     start = time.monotonic()
     if not os.getuid() == 0:
-        console = Console()
         text = Text("\n [!] Run the script as root user!")
         text.stylize('bold red')
         console.print(text)
         return
 
-    console = Console()
-    user_invitation = Text('Please enter ports range separated by a space\nExample: "1 1024"\n ')
+    user_invitation = Text('Please enter ports range (separated by a space)\nExample: "1 1024" or "1024"\n ')
     user_invitation.stylize('bold yellow')
     console.print(user_invitation)
 
