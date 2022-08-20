@@ -11,6 +11,7 @@ logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
 
 import scapy.all as sc
 import requests
+import lxml
 from pyfiglet import Figlet
 from bs4 import BeautifulSoup
 from rich.console import Console

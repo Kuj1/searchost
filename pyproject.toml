@@ -11,6 +11,7 @@ rich = "^12.5.1"
 requests = "^2.28.1"
 beautifulsoup4 = "^4.11.1"
 pyfiglet = "^0.8.post1"
+lxml = "^4.9.1"
 
 [tool.poetry.dev-dependencies]
 
