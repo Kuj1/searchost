@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "pypentest"
+version = "0.1.0"
+description = ""
+authors = ["kuj1 <the.same.dentist@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+scapy = "^2.4.5"
+rich = "^12.5.1"
+requests = "^2.28.1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
