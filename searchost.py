@@ -1,6 +1,8 @@
 import os
 import platform
 import time
+import logging
+logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
 from socket import gaierror
 from subprocess import check_output
 
@@ -77,17 +79,17 @@ def syn_ack_scan(ip, ports):
 
 def print_port(ip_mac_network):
     list_data_table = []
-    table = Table(title='"Network Information (IP, MAC) // Open Port"',
+    table = Table(title='\t\t  *Network Information (IP, MAC) // Open Port*',
                   title_justify='left')
-    table.add_column("IP", no_wrap=False, justify="left", style="green")
-    table.add_column("MAC", no_wrap=False, justify="left", style="green")
-    table.add_column("Ports", no_wrap=False, justify="left", style="green")
+    table.add_column('IP', no_wrap=False, justify='left', style='green')
+    table.add_column('MAC', no_wrap=False, justify='left', style='green')
+    table.add_column('Ports', no_wrap=False, justify='left', style='green')
 
     for ip in ip_mac_network:
         list_data_table.append(ip['ip'])
         list_data_table.append(ip['mac'])
         if ip['ip'] in result:
-            list_data_table.append(str(result[ip['ip']]).replace("': '", "/").replace("{", "[").replace("}","]"))
+            list_data_table.append(str(result[ip['ip']]).replace("': '", '/').replace('{', '[').replace('}',']'))
         else:
             list_data_table.append(" --- ")
 
@@ -103,31 +105,38 @@ def main():
     if not os.getuid() == 0:
         console = Console()
         text = Text("\n [!] Run the script as root user!")
-        text.stylize("bold red")
+        text.stylize('bold red')
         console.print(text)
         return
 
-    users_range = (input('Please enter ports range separated by a space\nExample: "1 1024"\n>> ').split())
+    console = Console()
+    user_invitation = Text('Please enter ports range separated by a space\nExample: "1 1024"\n ')
+    user_invitation.stylize('bold yellow')
+    console.print(user_invitation)
+
+    users_range = input('>> ').split()
+
+    if len(users_range) == 1:
+        users_range.insert(0, 1)
+
     port_range = tuple(map(int, users_range))
-    local_ip = sc.conf.route.route("0.0.0.0")[1]
+    local_ip = sc.conf.route.route('0.0.0.0')[1]
     ip_mac_network = get_ip_mac_nework(f'{local_ip}/{get_net_mask()}')
 
-    print(f'\nNetwork scanning:\n{"-" * 17}')
     with Progress() as progress:
-        task = progress.add_task("[green]Scaning...", total=len(ip_mac_network))
+        task = progress.add_task('[green]Scaning...', total=len(ip_mac_network))
         for ip in ip_mac_network:
-            syn_ack_scan(ip["ip"], port_range)
+            syn_ack_scan(ip['ip'], port_range)
             progress.update(task, advance=1)
 
-    console = Console()
     print_port(ip_mac_network)
-    text = Text(f'\n * Local IP: {local_ip}    * Local Gateway: {sc.conf.route.route("0.0.0.0")[2]}\n')
-    text.stylize("bold")
-    console.print(text)
+    text_title = Text(f'\n * Local IP: {local_ip}    * Local Gateway: {sc.conf.route.route("0.0.0.0")[2]}\n')
+    text_title.stylize('bold')
+    console.print(text_title)
 
-    text = Text(f'Scan time: {time.monotonic() - start}')
-    text.stylize("red")
-    console.print(text)
+    text_time = Text(f'Scan time: {time.monotonic() - start}')
+    text_time.stylize('red')
+    console.print(text_time)
 
 
 if __name__ == "__main__":
