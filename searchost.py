@@ -67,7 +67,7 @@ def syn_ack_scan(ip, ports):
         raise ValueError(f'Failed to get{ip}')
     answer = sc.sr(request_syn, timeout=1, retry=1, verbose=False)[0]
 
-    for send, receiv in answer:
+    for _ , receiv in answer:
         if receiv['TCP'].flags == "SA":
             try:
                 if str(receiv['IP'].src) not in result:
