@@ -2,9 +2,10 @@ import os
 import platform
 import time
 import logging
-logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
 from socket import gaierror
 from subprocess import check_output
+
+logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
 
 import scapy.all as sc
 import requests
