@@ -35,7 +35,8 @@
 ```
 ## Описание
 - Скрипт сканирует домашнюю сеть и выдает результат в виде таблицы:
-<img width="920" alt="Searchost" src="https://user-images.githubusercontent.com/89384156/185761923-32a884af-39e8-4a7f-b606-7085f6d1cfad.png">
+<img width="920" alt="raycast-untitled" src="https://user-images.githubusercontent.com/89384156/185763573-7affafae-476d-4b24-bbbc-1c77f570b3e5.png">
+
 
 
 ## How to
