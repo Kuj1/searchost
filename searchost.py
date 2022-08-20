@@ -136,7 +136,7 @@ def main():
             progress.update(task, advance=1)
 
     print_port(ip_mac_network)
-    text_title = Text(f'\n* Local IP: {local_ip}\n* Local Gateway: {sc.conf.route.route("0.0.0.0")[2]}\n')
+    text_title = Text(f'\n* Local IP: {local_ip}\t* Local Gateway: {sc.conf.route.route("0.0.0.0")[2]}\n')
     text_title.stylize('bold')
     console.print(text_title)
 
