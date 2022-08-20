@@ -83,7 +83,7 @@ def syn_ack_scan(ip, ports):
 
 def print_port(ip_mac_network):
     list_data_table = []
-    table = Table(title='\t\t  *Network Information (IP, MAC) // Open Port*',
+    table = Table(title='\t\t*Network Information (IP, MAC) // Open Port*',
                   title_justify='left')
     table.add_column('IP', no_wrap=False, justify='left', style='green')
     table.add_column('MAC', no_wrap=False, justify='left', style='green')
@@ -93,7 +93,7 @@ def print_port(ip_mac_network):
         list_data_table.append(ip['ip'])
         list_data_table.append(ip['mac'])
         if ip['ip'] in result:
-            list_data_table.append(str(result[ip['ip']]).replace("': '", '/').replace('{', '[').replace('}',']'))
+            list_data_table.append(str(result[ip['ip']]).replace("': '", '/').replace('{', '').replace('}','').replace("'", ''))
         else:
             list_data_table.append(" --- ")
 
@@ -120,6 +120,7 @@ def main():
     console.print(user_invitation)
 
     users_range = input('>> ').split()
+    print('\n')
 
     if len(users_range) == 1:
         users_range.insert(0, 1)
@@ -129,13 +130,13 @@ def main():
     ip_mac_network = get_ip_mac_nework(f'{local_ip}/{get_net_mask()}')
 
     with Progress() as progress:
-        task = progress.add_task('[green]Scaning...', total=len(ip_mac_network))
+        task = progress.add_task('[green]Scaning', total=len(ip_mac_network))
         for ip in ip_mac_network:
             syn_ack_scan(ip['ip'], port_range)
             progress.update(task, advance=1)
 
     print_port(ip_mac_network)
-    text_title = Text(f'\n * Local IP: {local_ip}    * Local Gateway: {sc.conf.route.route("0.0.0.0")[2]}\n')
+    text_title = Text(f'\n* Local IP: {local_ip}\n* Local Gateway: {sc.conf.route.route("0.0.0.0")[2]}\n')
     text_title.stylize('bold')
     console.print(text_title)
 
