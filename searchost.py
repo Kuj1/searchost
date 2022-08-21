@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 
+# Special comment for Artyom Vyalov from Skillbox
+
 import os
 import platform
 import time
 import logging
 from socket import gaierror
 from subprocess import check_output
+from typing import Dict, List, Tuple
 
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
 
@@ -25,7 +28,7 @@ net_masks = dict()
 url = 'https://www.pawprint.net/designresources/netmask-converter.php'
 
 
-def get_decoded_net_mask(url: str = url) -> dict:
+def get_decoded_net_mask(url: str = url) -> Dict:
     response = requests.get(url)
     
     soup = BeautifulSoup(response.text, features='xml')
@@ -39,7 +42,7 @@ def get_decoded_net_mask(url: str = url) -> dict:
 
     return net_masks
 
-def get_net_mask():
+def get_net_mask() -> Dict:
     if platform.system() == 'Darwin':
         net_mask = str(check_output("ifconfig en0 | grep 'netmask'", shell=True).decode()).split()[3].strip()
         for k, v in get_decoded_net_mask().items():
@@ -52,7 +55,7 @@ def get_net_mask():
         return net_mask
 
 
-def get_ip_mac_nework(ip):
+def get_ip_mac_nework(ip: str) -> List:
     answered_list = sc.srp(sc.Ether(dst='ff:ff:ff:ff:ff:ff') / sc.ARP(pdst=ip), timeout=1, verbose=False)[0]
     clients_list = []
     for element in answered_list:
@@ -60,7 +63,7 @@ def get_ip_mac_nework(ip):
     return clients_list
 
 
-def syn_ack_scan(ip, ports):
+def syn_ack_scan(ip: str, ports: Tuple) -> None:
     try:
         request_syn = sc.IP(dst=ip) / sc.TCP(dport=ports, flags="S")
     except gaierror:
@@ -81,7 +84,7 @@ def syn_ack_scan(ip, ports):
                 result[str(receiv['IP'].src)][str(receiv['TCP'].sport)] = 'Undefined'
 
 
-def print_port(ip_mac_network):
+def print_port(ip_mac_network: List) -> None:
     list_data_table = []
     table = Table(title='\t\t*Network Information (IP, MAC) // Open Port*',
                   title_justify='left')
@@ -147,3 +150,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
