@@ -47,8 +47,9 @@ def get_net_mask() -> Dict:
         net_mask = str(check_output("ifconfig en0 | grep 'netmask'", shell=True).decode()).split()[3].strip()
         for k, v in get_decoded_net_mask().items():
             if k == net_mask:
-
+                
                  return int(v.replace('/',''))
+
     elif platform.system() == 'Linux':
         net_mask = str(check_output('ip -h -br a  | grep UP', shell=True).decode()).split()[2].split("/")[1]
 
